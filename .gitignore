@@ -1,2 +1,4 @@
-extensions
-__pycache__
+extensions/
+__pycache__/
+data/*
+.ipynb_checkpoints/
