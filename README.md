@@ -9,5 +9,10 @@ This program uses Selenium to automate data collection of VGC teams with tournam
     - [ ] Choose a ML model
     - [ ] Categorize teams
 
-### Features to add in the future
+### Additional features to add
 - [ ] Suggesting a sixth member for a team
+- [ ] Adding functionality for google sheets
+- [ ] Analyzing OTS teams
+- [ ] PostgreSQL to store teams
+- [ ] Find hardest matchup (what not to bring against certain matchups)
+- [ ] Input enemy team, and find the best mons to bring

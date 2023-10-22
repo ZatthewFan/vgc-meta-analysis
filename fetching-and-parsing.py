@@ -7,6 +7,7 @@ from Team import Team
 import re
 
 BASE_URL = "https://victoryroadvgc.com/sv-rental-teams-2023/"
+# BASE_URL = "https://docs.google.com/spreadsheets/d/1axlwmzPA49rYkqXh7zHvAtSP-TKbM0ijGYBPRflLSWw/edit#gid=1948547929"
 CURRENT_FORMAT = "gen9vgc2023regulatione"
 
 options = Options()
@@ -57,7 +58,7 @@ def parse_moveset(pkm, moves):
     pkm.set_moveset(moveset)
 
 # parses the data for each individual pokemon
-def parse_mon(pkm_set):
+def parse_mon(pkm_set, team):
     pkm = Pokemon()
     pkm_set = pkm_set.text.splitlines()
 
@@ -76,6 +77,7 @@ def parse_mon(pkm_set):
             pkm.set_tera(line.split(":")[1].strip())
         elif "EVs" in line:
             parse_ev_iv("ev", pkm, re.split(": |/", line.strip())[1:])
+            team.set_ots(False)
         elif "Nature" in line:
             pkm.set_nature(line.split()[0].strip())
         elif "IVs" in line:
@@ -97,7 +99,7 @@ def parse_pokepaste():
         return
     
     for pkm_set in sets:
-        pkm = parse_mon(pkm_set)
+        pkm = parse_mon(pkm_set, team)
         if pkm == None:
             continue
         
@@ -113,7 +115,7 @@ def parse_all_pokepastes(pokepastes):
         driver.get(pokepaste)
         paste = parse_pokepaste()
         if paste == None:
-            break
+            continue
         
         teams.append(paste)
     return teams
