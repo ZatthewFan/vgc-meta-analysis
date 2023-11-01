@@ -91,7 +91,10 @@ def parse_mon(pkm_set, team):
 # stratifies the pokepaste for each pokemon, and iterates through them
 def parse_pokepaste():
     sets = driver.find_elements(By.CSS_SELECTOR, 'pre')
-    vgc_format = driver.find_element(By.CSS_SELECTOR, 'aside p').text[8:]
+    try:
+        vgc_format = driver.find_element(By.CSS_SELECTOR, 'aside p').text[8:]
+    except NoSuchElementException:
+        vgc_format = None
     team = Team(vgc_format)
     
     # format checker
@@ -138,31 +141,35 @@ def testing():
     parse_ev_iv("ev", pkm, re.split(": |/", set[4])[1:])
     parse_moveset(pkm, set[-4:])
     print(pkm.get_moveset())
-    
-    # for line in set:
-    #     if "Tera Type" in line:
-    #         pkm.set_tera(line.split(":")[1].strip())
-    #         print(pkm.get_tera())
-    #     elif "EVs" in line:
-    #         parse_ev_iv("ev", pkm, re.split(": |/", line.strip())[1:])
-    #         print(pkm.get_ev())
-    #     elif "Nature" in line:
-    #         pkm.set_nature(line.split()[0].strip())
-    #         print(pkm.get_nature())
-    #     elif "IVs" in line:
-    #         parse_ev_iv("iv", pkm, re.split(": |/", line.strip())[1:])
-    #         print(pkm.get_iv())
+
+def fetch_from_url():
+    open_webpage()
+    pokepastes = get_pokepaste_links()
+    teams = parse_all_pokepastes(pokepastes)
+    return teams
+
+def pkm_to_df(teamlist):
+    for pkm in teamlist:
+        print("test") #TODO this is a placeholder; change this
+    return
+
+def team_to_df(team):
+    pkm_to_df(team.get_teamlist())
+    return
 
 def teams_to_csv(teams):
-    # TODO complete
+    # TODO decide whether teams are supposed to be a csv referencing other csv for pokemon, directory, or teams and pokemon should be in different diretories
+    for team in teams:
+        team_to_df(team)
     return
 
 if __name__ == "__main__":
+    # teams = fetch_from_url()
     open_webpage()
     pokepastes = get_pokepaste_links()
     teams = parse_all_pokepastes(pokepastes)
     
-    teams_to_csv(teams)
+    # teams_to_csv(teams)
     driver.quit()
     
     # testing()
