@@ -18,3 +18,4 @@ This program uses Selenium to automate data collection of VGC teams with tournam
 - [ ] Input enemy team, and find the best mons to bring
 - [ ] Make an extension to collect data from pokemon showdown OTS battles
 - [ ] Add teams through discord bot
+- [ ] Fetch data from google sheets (download sheets as csv or through google api)
