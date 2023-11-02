@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import NoSuchElementException
 import pandas as pd
 from Pokemon import Pokemon
 from Team import Team
@@ -94,7 +95,7 @@ def parse_pokepaste():
     try:
         vgc_format = driver.find_element(By.CSS_SELECTOR, 'aside p').text[8:]
     except NoSuchElementException:
-        vgc_format = None
+        vgc_format = "N/A"
     team = Team(vgc_format)
     
     # format checker
@@ -164,10 +165,7 @@ def teams_to_csv(teams):
     return
 
 if __name__ == "__main__":
-    # teams = fetch_from_url()
-    open_webpage()
-    pokepastes = get_pokepaste_links()
-    teams = parse_all_pokepastes(pokepastes)
+    teams = fetch_from_url()
     
     # teams_to_csv(teams)
     driver.quit()
