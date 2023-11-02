@@ -155,23 +155,27 @@ class FetchFromURL:
         self.driver.quit()
         return teams
 
-def pkm_to_df(teamlist):
-    for pkm in teamlist:
-        print("test") #TODO this is a placeholder; change this
-    return
+class ConvertCSV:
+    def pkm_to_df(self, teamlist):
+        for pkm in teamlist:
+            print("test") #TODO this is a placeholder; change this
+        return
 
-def team_to_df(team):
-    pkm_to_df(team.get_teamlist())
-    return
+    def team_to_df(self, team: Team) -> None:
+        self.pkm_to_df(team.get_teamlist())
+        # do something with team format
+        # do something with team OTS status
+        return
 
-def teams_to_csv(teams):
-    # TODO decide whether teams are supposed to be a csv referencing other csv for pokemon, directory, or teams and pokemon should be in different diretories
-    for team in teams:
-        team_to_df(team)
-    return
+    def teams_to_csv(self, teams: list[Team]) -> None:
+        # TODO decide whether teams are supposed to be a csv referencing other csv for pokemon, directory, or teams and pokemon should be in different diretories
+        for team in teams:
+            self.team_to_df(team)
+        return
 
 if __name__ == "__main__":
     url_fetcher = FetchFromURL("https://victoryroadvgc.com/sv-rental-teams-2023/", "gen9vgc2023regulatione")
     teams = url_fetcher.fetch()
     
-    # teams_to_csv(teams)
+    converter = ConvertCSV()
+    converter.teams_to_csv(teams)
