@@ -7,6 +7,7 @@ import pandas as pd
 from Pokemon import Pokemon
 from Team import Team
 import re
+from pymongo import MongoClient
 
 class FetchFromURL:
     BASE_URL = None
