@@ -4,8 +4,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.remote.webelement import WebElement
 import pandas as pd
-from Pokemon import Pokemon
-from Team import Team
+from pokemon import Pokemon
+from team import Team
 import re
 import pymongo
 import os
@@ -179,8 +179,10 @@ class DatabaseManager:
 
 class ConvertCSV:
     def pkm_to_df(self, teamlist):
+        n = 0           # test purposes; remove later
         for pkm in teamlist:
-            print("test") #TODO this is a placeholder; change this
+            print(n)    # TODO this is a placeholder; change this
+            n += 1      # test purposes; remove later
         return
 
     def team_to_df(self, team: Team) -> None:
