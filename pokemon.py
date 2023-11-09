@@ -3,26 +3,34 @@ class Pokemon:
     item = None
     ability = None
     tera = None
-    ev = {
-        "HP" : 0, 
-        "Atk": 0, 
-        "Def": 0, 
-        "SpA": 0, 
-        "SpD": 0, 
-        "Spe": 0
-    }
+    ev = None
     nature = None
-    iv = {
-        "HP" : 31, 
-        "Atk": 31, 
-        "Def": 31, 
-        "SpA": 31, 
-        "SpD": 31, 
-        "Spe": 31
-    }
-    moveset = [None, None, None, None]
+    iv = None
+    moveset = None
     
-    
+    def __init__(self):
+        self.name = None
+        self.item = None
+        self.ability = None
+        self.tera = None
+        self.ev = {
+            "HP" : 0, 
+            "Atk": 0, 
+            "Def": 0, 
+            "SpA": 0, 
+            "SpD": 0, 
+            "Spe": 0
+        }
+        self.nature = None
+        self.iv = {
+            "HP" : 31, 
+            "Atk": 31, 
+            "Def": 31, 
+            "SpA": 31, 
+            "SpD": 31, 
+            "Spe": 31
+        }
+        self.moveset = [None, None, None, None]
     
     
     def set_name(self, name: str) -> None:

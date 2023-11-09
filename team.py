@@ -1,13 +1,15 @@
 from pokemon import Pokemon
 class Team:
     format = None
-    teamlist = []
-    is_ots = False
+    teamlist = None
+    is_ots = None
     iter_count = None
     
     def __init__(self, format: str) -> None:
         self.format = format
         self.teamlist = []
+        self.is_ots = True
+        self.iter_count = None
     
     def __iter__(self):
         self.iter_count = 0

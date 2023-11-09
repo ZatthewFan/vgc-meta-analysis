@@ -57,19 +57,19 @@ class FetchFromURL:
         
         # getting rid of extra spaces and hyphens
         for move in moves:
-            move = move.split("-")[1]
+            move = move.split("- ")[1]
             move = move.strip()
             moveset.append(move)
         
         pkm.set_moveset(moveset)
 
     # parses the data for each individual pokemon
-    def parse_mon(self, pkm_set: WebElement, team: Team) -> None | Pokemon:
+    def parse_mon(self, pkm_set: WebElement, team: Team) -> Pokemon:
         pkm = Pokemon()
         pkm_set = pkm_set.text.splitlines()
 
-        if "EV" not in pkm_set[4]:
-            return
+        # if "EV" not in pkm_set[4]:
+        #     return
         
         # name, item, and ability are sure to be in the pokepaste
         pkm.set_name(pkm_set[0].split("@")[0].strip())
@@ -78,19 +78,21 @@ class FetchFromURL:
         
         # Tera Type, EVs, Nature, and IVs might not be in the pokepaste or might not be in a fixed line
         # this loops through every line, checking whether it's any of the attributes we're looking for, and updates the pokemon set
-        for line in pkm_set:
+        for i in range(2, len(pkm_set)-4):
+            line = pkm_set[i]
+            
             if "Tera Type" in line:
                 pkm.set_tera(line.split(":")[1].strip())
             elif "EVs" in line:
-                self.parse_ev_iv("ev", pkm, re.split(": |/", line.strip())[1:])
+                self.parse_ev_iv("ev", pkm, re.split(": | / ", line)[1:])
                 team.set_ots(False)
             elif "Nature" in line:
                 pkm.set_nature(line.split()[0].strip())
             elif "IVs" in line:
-                self.parse_ev_iv("iv", pkm, re.split(": |/", line.strip())[1:])
+                self.parse_ev_iv("iv", pkm, re.split(": | / ", line)[1:])
         
         # last 4 lines are definitely the moves
-        self.parse_moveset(pkm, pkm_set[-4:])
+        self.parse_moveset(pkm, pkm_set[-4:])        
         
         return pkm
 
@@ -101,6 +103,7 @@ class FetchFromURL:
             vgc_format = self.driver.find_element(By.CSS_SELECTOR, 'aside p').text[8:]
         except NoSuchElementException:
             vgc_format = "N/A"
+        
         team = Team(vgc_format)
         
         # format checker
@@ -109,8 +112,10 @@ class FetchFromURL:
         
         for pkm_set in sets:
             pkm = self.parse_mon(pkm_set, team)
-            if pkm == None:
-                continue
+            
+            # # if pkm is does not have ev
+            # if pkm == None:
+            #     continue
             
             team.add_pkm(pkm)
             
@@ -154,6 +159,7 @@ class FetchFromURL:
         teams = self.parse_all_pokepastes(pokepastes)
         self.driver.quit()
         return teams
+
 
 class ConvertCSV:
     def pkm_to_df(self, teamlist):
