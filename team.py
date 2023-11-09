@@ -3,10 +3,23 @@ class Team:
     format = None
     teamlist = []
     is_ots = False
+    iter_count = None
     
     def __init__(self, format: str) -> None:
         self.format = format
         self.teamlist = []
+    
+    def __iter__(self):
+        self.iter_count = 0
+        return self
+    
+    def __next__(self):
+        if self.iter_count < len(self.teamlist):
+            pkm = self.teamlist[self.iter_count]
+            self.iter_count += 1
+            return pkm
+        else:
+            raise StopIteration
     
     def add_pkm(self, pkm: Pokemon) -> None:
         self.teamlist.append(pkm)
