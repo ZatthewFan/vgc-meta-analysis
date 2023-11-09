@@ -4,8 +4,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.remote.webelement import WebElement
 import pandas as pd
-from pokemon import Pokemon
-from team import Team
+from modules.pokemon import Pokemon
+from modules.team import Team
 import re
 
 class FetchFromURL:
