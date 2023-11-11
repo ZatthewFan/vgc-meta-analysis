@@ -13,7 +13,7 @@ This program uses Selenium to automate data collection of VGC teams with tournam
 - [ ] Suggesting a sixth member for a team
 - [ ] Adding functionality for google sheets
 - [ ] Analyzing OTS teams
-- [ ] ~~PostgreSQL~~ MongoDB to store teams
+- [ ] PostgreSQL ~~MongoDB~~ to store teams
 - [ ] Find hardest matchup (what not to bring against certain matchups)
 - [ ] Input enemy team, and find the best mons to bring
 - [ ] Make an extension to collect data from pokemon showdown OTS battles

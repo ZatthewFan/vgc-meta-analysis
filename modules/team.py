@@ -1,4 +1,4 @@
-from pokemon import Pokemon
+from modules.pokemon import Pokemon
 class Team:
     format = None
     teamlist = None

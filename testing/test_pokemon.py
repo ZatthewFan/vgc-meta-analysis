@@ -1,4 +1,4 @@
-from pokemon import Pokemon
+from modules.pokemon import Pokemon
 import re
 
 def parse_ev_iv(which: str, pkm: Pokemon, stats: list[str]) -> None:
