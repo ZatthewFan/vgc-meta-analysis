@@ -1,3 +1,4 @@
+import requests
 class Pokemon:
     name = None
     item = None
@@ -32,6 +33,17 @@ class Pokemon:
         }
         self.moveset = [None, None, None, None]
     
+    def calc_stats(self):
+        base_url = "https://play.pokemonshowdown.com/data/pokedex.json"
+        response = requests.get(base_url)
+        
+        if response == 200:
+            dex = response.json()
+        else:
+            print(f"error:{response.status_code}")
+        
+        # TODO: find a pokemon's type
+        # TODO: calc a pokemon's stats based on level 50 with evs and ivs
     
     def set_name(self, name: str) -> None:
         self.name = name

@@ -1,5 +1,6 @@
-extensions/
+extensions/*
 __pycache__/
 data/*
 .ipynb_checkpoints/
 .env
+.venv

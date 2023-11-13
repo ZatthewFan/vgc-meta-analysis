@@ -1,8 +1,8 @@
 from modules.pokemon import Pokemon
 class Team:
     format = None
-    teamlist = None
     is_ots = None
+    teamlist = None
     iter_count = None
     
     def __init__(self, format: str) -> None:
