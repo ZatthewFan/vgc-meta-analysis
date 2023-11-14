@@ -57,6 +57,9 @@ class FetchFromURL:
         
         # getting rid of extra spaces and hyphens
         for move in moves:
+            # extra check to see if it's actually a move
+            if move[:2] != "- ":
+                continue
             move = move.split("- ")[1]
             move = move.strip()
             moveset.append(move)
@@ -78,10 +81,12 @@ class FetchFromURL:
         
         # Tera Type, EVs, Nature, and IVs might not be in the pokepaste or might not be in a fixed line
         # this loops through every line, checking whether it's any of the attributes we're looking for, and updates the pokemon set
-        for i in range(2, len(pkm_set)-4):
+        for i in range(2, len(pkm_set)):
             line = pkm_set[i]
             
-            if "Tera Type" in line:
+            if "Level" in line:
+                pkm.set_level(line.split(":")[1].strip())
+            elif "Tera Type" in line:
                 pkm.set_tera(line.split(":")[1].strip())
             elif "EVs" in line:
                 self.parse_ev_iv("ev", pkm, re.split(": | / ", line)[1:])
@@ -91,8 +96,8 @@ class FetchFromURL:
             elif "IVs" in line:
                 self.parse_ev_iv("iv", pkm, re.split(": | / ", line)[1:])
         
-        # last 4 lines are definitely the moves
-        self.parse_moveset(pkm, pkm_set[-4:])        
+        # last 4 lines are probably the moves
+        self.parse_moveset(pkm, pkm_set[-4:])
         
         return pkm
 

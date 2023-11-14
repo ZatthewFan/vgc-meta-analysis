@@ -21,6 +21,11 @@ def ability_test(team, expected):
     
     assert result == expected
 
+def level_test(team, expected):
+    result = []
+    for pkm in team:
+        result.append(pkm.get_level())
+
 def tera_test(team, expected):
     result = []
     for pkm in team:
@@ -62,6 +67,7 @@ if __name__ == "__main__":
     name_test(test_team, ["Tornadus", "Flutter Mane", "Landorus-Therian", "Rillaboom", "Ogerpon-Hearthflame (F)", "Farigiraf"])
     item_test(test_team, ["Focus Sash", "Booster Energy", "Choice Scarf", "Assault Vest", "Hearthflame Mask", "Rocky Helmet"])
     ability_test(test_team, ["Prankster", "Protosynthesis", "Intimidate", "Grassy Surge", "Mold Breaker", "Armor Tail"])
+    level_test(test_team, [50, 50, 50, 50, 50, 50])
     tera_test(test_team, ["Ghost", "Fairy", "Flying", "Fire", "Fire", "Fairy"])
     ev_test(test_team, {"HP": 76, "Atk": 0, "Def": 100, "SpA": 116, "SpD": 4, "Spe": 212}) # only flutter mane
     nature_test(test_team, ["Timid", "Modest", "Adamant", "Adamant", "Jolly", "Bold"])
