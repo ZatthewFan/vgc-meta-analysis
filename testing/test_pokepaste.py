@@ -58,6 +58,18 @@ def moveset_test(team, expected):
     
     assert result == expected
 
+def type_test(team, expected):
+    # ogerpon
+    result = team.get_teamlist()[4].get_type()
+    
+    assert result == expected
+
+def base_stat_test(team, expected):
+    # rillaboom
+    result = team.get_teamlist()[3].get_base_stats()
+    
+    assert result == expected
+
 
 if __name__ == "__main__":
     fetched = FetchFromURL("https://pokepast.es/22b07255f896b829", "gen9vgc2023regulatione")
@@ -69,9 +81,11 @@ if __name__ == "__main__":
     ability_test(test_team, ["Prankster", "Protosynthesis", "Intimidate", "Grassy Surge", "Mold Breaker", "Armor Tail"])
     level_test(test_team, [50, 50, 50, 50, 50, 50])
     tera_test(test_team, ["Ghost", "Fairy", "Flying", "Fire", "Fire", "Fairy"])
-    ev_test(test_team, {"HP": 76, "Atk": 0, "Def": 100, "SpA": 116, "SpD": 4, "Spe": 212}) # only flutter mane
+    ev_test(test_team, {"hp": 76, "atk": 0, "def": 100, "spa": 116, "spd": 4, "spe": 212}) # only flutter mane
     nature_test(test_team, ["Timid", "Modest", "Adamant", "Adamant", "Jolly", "Bold"])
-    iv_test(test_team, {"HP": 31, "Atk": 31, "Def": 31, "SpA": 31, "SpD": 31, "Spe": 31}) # only lando-t
+    iv_test(test_team, {"hp": 31, "atk": 31, "def": 31, "spa": 31, "spd": 31, "spe": 31}) # only lando-t
     moveset_test(test_team, ["Ivy Cudgel", "Grassy Glide", "Stomping Tantrum", "Spiky Shield"]) # only ogerpon
+    type_test(test_team, ["grass", "fire"]) # only ogerpon
+    base_stat_test(test_team, {"hp": 100, "atk": 125, "def": 90, "spa": 60, "spd": 70, "spe": 85}) # only rillaboom
     
     print(test_team)

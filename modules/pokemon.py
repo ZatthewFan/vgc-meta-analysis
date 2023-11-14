@@ -1,3 +1,4 @@
+import requests
 class Pokemon:
     name = None
     item = None
@@ -9,10 +10,55 @@ class Pokemon:
     iv = None
     moveset = None
     
+    dex_info = None
+    
     pkm_type = None
     base_stats = None
     total_stats = None
-    # TODO add weaknesses and resistance chart
+    
+    # # TODO add weaknesses and resistance chart
+    # weaknesses = {
+    #     "normal": 1,
+    #     "fighting": 1,
+    #     "flying": 1,
+    #     "poison": 1,
+    #     "ground": 1,
+    #     "rock": 1,
+    #     "bug": 1,
+    #     "ghost": 1,
+    #     "steel": 1,
+    #     "fire": 1,
+    #     "water": 1,
+    #     "grass": 1,
+    #     "electric": 1,
+    #     "psychic": 1,
+    #     "ice": 1,
+    #     "dragon": 1,
+    #     "dark": 1,
+    #     "fairy": 1
+    # }
+    
+    # # pokemondb's ordering
+    # weaknesses = {
+    #     "normal": 1,
+    #     "fire": 1,
+    #     "water": 1,
+    #     "electric": 1,
+    #     "grass": 1,
+    #     "ice": 1,
+    #     "fighting": 1,
+    #     "poison": 1,
+    #     "ground": 1,
+    #     "flying": 1,
+    #     "psychic": 1,
+    #     "bug": 1,
+    #     "rock": 1,
+    #     "ghost": 1,
+    #     "dragon": 1,
+    #     "dark": 1,
+    #     "steel": 1,
+    #     "fairy": 1
+    # }
     
     def __init__(self):
         self.name = None
@@ -21,34 +67,37 @@ class Pokemon:
         self.level = None
         self.tera = None
         self.ev = {
-            "HP" : 0, 
-            "Atk": 0, 
-            "Def": 0, 
-            "SpA": 0, 
-            "SpD": 0, 
-            "Spe": 0
+            "hp" : 0, 
+            "atk": 0, 
+            "def": 0, 
+            "spa": 0, 
+            "spd": 0, 
+            "spe": 0
         }
         self.nature = None
         self.iv = {
-            "HP" : 31, 
-            "Atk": 31, 
-            "Def": 31, 
-            "SpA": 31, 
-            "SpD": 31, 
-            "Spe": 31
+            "hp" : 31, 
+            "atk": 31, 
+            "def": 31, 
+            "spa": 31, 
+            "spd": 31, 
+            "spe": 31
         }
         self.moveset = [None, None, None, None]
+        
+        self.dex_info = None
         
         self.pkm_type = None
         self.base_stats = None
         self.total_stats = None
     
-    
     def set_name(self, name: str) -> None:
         self.name = name
         
-        self.pkm_type = self.set_type(self.name)
-        self.base_stats = self.set_base_stats(self.name)
+        self.get_dex_info(self.name)
+        
+        self.set_type()
+        self.set_base_stats()
     
     def set_item(self, item: str) -> None:
         self.item = item
@@ -80,14 +129,26 @@ class Pokemon:
         # self.moveset[1] = moveset[1]
         # self.moveset[2] = moveset[2]
         # self.moveset[3] = moveset[3]
-        for slot in moveset:
+        for slot in range(len(moveset)):
             self.moveset[slot] = moveset[slot]
+            
+    def get_dex_info(self, pkm_name: str) -> None:
+        base_url = f"https://play.pokemonshowdown.com/data/pokedex.json"
+        response = requests.get(base_url)
+        
+        if response.status_code != 200:
+            print(f"error: {response.status_code}")
+
+        # keys are all lowercase, no spaces, no forme hyphens, and no gender indication (for example: Ogerpon-Hearthflame (F) --> ogerponhearthflame)
+        dex_key = pkm_name.lower().replace(" ", "").replace("-", "").split("(")[0]
+        self.dex_info = response.json()[dex_key]
     
-    def set_type(self, pkm_name):
-        self.pkm_type = None # TODO use api to get type
+    def set_type(self) -> None:
+        types = [x.lower() for x in self.dex_info["types"]]
+        self.pkm_type = types
     
-    def set_base_stats(self, pkm_name):
-        self.base_stats = None # TODO use api to get base stats
+    def set_base_stats(self) -> None:
+        self.base_stats = self.dex_info["baseStats"]
     
     def get_name(self) -> str:
         return self.name
@@ -116,7 +177,7 @@ class Pokemon:
     def get_moveset(self) -> list[str]:
         return self.moveset
     
-    def get_type(self) -> tuple(str):
+    def get_type(self) -> list[str]:
         return self.pkm_type
     
     def get_base_stats(self) -> dict[str, int]:

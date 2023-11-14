@@ -43,12 +43,12 @@ class FetchFromURL:
         
         if which == "ev":
             for item in stats_dict.items():
-                key = item[0]
+                key = item[0].lower()
                 value = item[1]
                 pkm.set_ev(**{key: value})
         elif which == "iv":
             for item in stats_dict.items():
-                key = item[0]
+                key = item[0].lower()
                 value = item[1]
                 pkm.set_iv(**{key: value})
 
@@ -138,25 +138,6 @@ class FetchFromURL:
             
             teams.append(paste)
         return teams
-
-
-    def testing(self) -> None:
-        url = "https://pokepast.es/22b07255f896b829"
-        
-        self.driver.get(url)
-        set = self.driver.find_element(By.XPATH, '/html/body/article[1]/pre').text.splitlines()
-        
-        print(set[0].split("@")[0].strip())
-        print(set[0].split("@")[1].strip())
-        print(set[1].split(":")[1].strip())
-        print(set[3].split(":")[1].strip())
-        print(re.split(": |/", set[4])[1:])
-        print(set)
-        
-        pkm = Pokemon()
-        self.parse_ev_iv("ev", pkm, re.split(": |/", set[4])[1:])
-        self.parse_moveset(pkm, set[-4:])
-        print(pkm.get_moveset())
 
     def fetch(self) -> list[Team]:
         self.open_webpage()
