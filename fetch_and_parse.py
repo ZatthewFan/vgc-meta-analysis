@@ -85,7 +85,7 @@ class FetchFromURL:
             line = pkm_set[i]
             
             if "Level" in line:
-                pkm.set_level(line.split(":")[1].strip())
+                pkm.set_level(int(line.split(":")[1].strip()))
             elif "Tera Type" in line:
                 pkm.set_tera(line.split(":")[1].strip())
             elif "EVs" in line:

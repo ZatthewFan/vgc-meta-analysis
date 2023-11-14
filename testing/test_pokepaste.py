@@ -70,6 +70,13 @@ def base_stat_test(team, expected):
     
     assert result == expected
 
+def total_stat_test(team, expected):
+    # flutter mane
+    result = team.get_teamlist()[1].get_total_stats()
+    print(f"result: {result}")
+    
+    assert result == expected
+
 
 if __name__ == "__main__":
     fetched = FetchFromURL("https://pokepast.es/22b07255f896b829", "gen9vgc2023regulatione")
@@ -87,5 +94,6 @@ if __name__ == "__main__":
     moveset_test(test_team, ["Ivy Cudgel", "Grassy Glide", "Stomping Tantrum", "Spiky Shield"]) # only ogerpon
     type_test(test_team, ["grass", "fire"]) # only ogerpon
     base_stat_test(test_team, {"hp": 100, "atk": 125, "def": 90, "spa": 60, "spd": 70, "spe": 85}) # only rillaboom
+    total_stat_test(test_team, {"hp": 140, "atk": 54, "def": 88, "spa": 187, "spd": 156, "spe": 182})
     
     print(test_team)

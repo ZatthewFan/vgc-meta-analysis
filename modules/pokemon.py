@@ -1,4 +1,9 @@
 import requests
+import math
+import json
+
+f = open("nature-val.json")
+NATURE_VAL = json.load(f)
 class Pokemon:
     name = None
     item = None
@@ -116,6 +121,7 @@ class Pokemon:
             self.ev[key] = value
         
         # set the total stats
+        self.set_total_stats()
     
     def set_nature(self, nature: str) -> None:
         self.nature = nature
@@ -125,10 +131,6 @@ class Pokemon:
             self.iv[key] = value
     
     def set_moveset(self, moveset: list[str]) -> None:
-        # self.moveset[0] = moveset[0]
-        # self.moveset[1] = moveset[1]
-        # self.moveset[2] = moveset[2]
-        # self.moveset[3] = moveset[3]
         for slot in range(len(moveset)):
             self.moveset[slot] = moveset[slot]
             
@@ -139,7 +141,8 @@ class Pokemon:
         if response.status_code != 200:
             print(f"error: {response.status_code}")
 
-        # keys are all lowercase, no spaces, no forme hyphens, and no gender indication (for example: Ogerpon-Hearthflame (F) --> ogerponhearthflame)
+        # keys are all lowercase, no spaces, no forme hyphens, and no gender indication outside of formes
+        # (for example: Ogerpon-Hearthflame (F) --> ogerponhearthflame)
         dex_key = pkm_name.lower().replace(" ", "").replace("-", "").split("(")[0]
         self.dex_info = response.json()[dex_key]
     
@@ -149,6 +152,32 @@ class Pokemon:
     
     def set_base_stats(self) -> None:
         self.base_stats = self.dex_info["baseStats"]
+    
+    def set_total_stats(self) -> None:
+        # formulas are from https://bulbapedia.bulbagarden.net/wiki/Stat#Generation_III_onward
+        total_stats = {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "spa": 0,
+            "spd": 0,
+            "spe": 0
+        }
+        
+        for key in total_stats.keys():
+            partial_stat = math.floor(
+                (((2*self.base_stats[key]) + (self.iv[key]) + math.floor(self.ev[key]/4)) * self.level) / 100
+            )
+            if key == "hp":
+                if self.name == "Shedinja":
+                    total_stats[key] = 1
+                else:
+                    total_stats[key] = partial_stat + self.level + 10
+            else:
+                # total_stats[key] = math.floor((partial_stat + 5) * NATURE_VAL[self.nature.lower()])
+                print("not reached nature")
+        
+        self.total_stats = total_stats
     
     def get_name(self) -> str:
         return self.name
