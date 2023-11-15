@@ -26,6 +26,7 @@ try:
     
     # create_script = ''' CREATE TABLE pokemon (
     #                         id          int PRIMARY KEY
+    #                         name        varchar(30) NOT NULL
     # )
     # '''
     

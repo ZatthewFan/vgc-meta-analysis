@@ -3,6 +3,8 @@ import json
 
 f = open("nature-val.json")
 NATURE_VAL = json.load(f)
+f = open("defense-type-chart.json")
+DEFENSE_CHART = json.load(f)
 class Pokemon:
     name = None
     item = None
@@ -20,49 +22,7 @@ class Pokemon:
     base_stats = None
     total_stats = None
     
-    # # TODO add weaknesses and resistance chart
-    # weaknesses = {
-    #     "normal": 1,
-    #     "fighting": 1,
-    #     "flying": 1,
-    #     "poison": 1,
-    #     "ground": 1,
-    #     "rock": 1,
-    #     "bug": 1,
-    #     "ghost": 1,
-    #     "steel": 1,
-    #     "fire": 1,
-    #     "water": 1,
-    #     "grass": 1,
-    #     "electric": 1,
-    #     "psychic": 1,
-    #     "ice": 1,
-    #     "dragon": 1,
-    #     "dark": 1,
-    #     "fairy": 1
-    # }
-    
-    # # pokemondb's ordering
-    # weaknesses = {
-    #     "normal": 1,
-    #     "fire": 1,
-    #     "water": 1,
-    #     "electric": 1,
-    #     "grass": 1,
-    #     "ice": 1,
-    #     "fighting": 1,
-    #     "poison": 1,
-    #     "ground": 1,
-    #     "flying": 1,
-    #     "psychic": 1,
-    #     "bug": 1,
-    #     "rock": 1,
-    #     "ghost": 1,
-    #     "dragon": 1,
-    #     "dark": 1,
-    #     "steel": 1,
-    #     "fairy": 1
-    # }
+    weaknesses = None
     
     def __init__(self):
         self.name = None
@@ -94,6 +54,27 @@ class Pokemon:
         self.pkm_type = None
         self.base_stats = None
         self.total_stats = None
+        
+        self.weaknesses = {
+            "normal": 1,
+            "fire": 1,
+            "water": 1,
+            "electric": 1,
+            "grass": 1,
+            "ice": 1,
+            "fighting": 1,
+            "poison": 1,
+            "ground": 1,
+            "flying": 1,
+            "psychic": 1,
+            "bug": 1,
+            "rock": 1,
+            "ghost": 1,
+            "dragon": 1,
+            "dark": 1,
+            "steel": 1,
+            "fairy": 1
+        }
     
     def set_name(self, name: str) -> None:
         self.name = name
@@ -129,6 +110,7 @@ class Pokemon:
         self.dex_info = dex
         self.set_type()
         self.set_base_stats()
+        self.set_weaknesses()
     
     def set_type(self) -> None:
         types = [x.lower() for x in self.dex_info["types"]]
@@ -162,6 +144,11 @@ class Pokemon:
                 total_stats[key] = math.floor((partial_stat + 5) * NATURE_VAL[self.nature.lower()][key])
         
         self.total_stats = total_stats
+    
+    def set_weaknesses(self) -> None:
+        for my_type in self.pkm_type:
+            for type in self.weaknesses.keys():
+                self.weaknesses[type] *= DEFENSE_CHART[my_type][type]
     
     def get_name(self) -> str:
         return self.name
@@ -198,3 +185,6 @@ class Pokemon:
     
     def get_total_stats(self) -> dict[str, int]:
         return self.total_stats
+
+    def get_weaknesses(self) -> dict[str, int]:
+        return self.weaknesses

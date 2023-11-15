@@ -76,6 +76,11 @@ def total_stat_test(team, expected):
     
     assert result == expected
 
+def weakness_test(team, expected):
+    # ogerpon-hearthflame
+    result = team.get_teamlist()[4].get_weaknesses()
+    
+    assert result == expected
 
 if __name__ == "__main__":
     fetched = FetchFromURL("https://pokepast.es/22b07255f896b829", "gen9vgc2023regulatione")
@@ -94,5 +99,25 @@ if __name__ == "__main__":
     type_test(test_team, ["grass", "fire"]) # only ogerpon
     base_stat_test(test_team, {"hp": 100, "atk": 125, "def": 90, "spa": 60, "spd": 70, "spe": 85}) # only rillaboom
     total_stat_test(test_team, {"hp": 140, "atk": 54, "def": 88, "spa": 187, "spd": 156, "spe": 182}) # only flutter mane
+    weakness_test(test_team, {
+        "normal": 1,
+        "fire": 1,
+        "water": 1,
+        "electric": 0.5,
+        "grass": 0.25,
+        "ice": 1,
+        "fighting": 1,
+        "poison": 2,
+        "ground": 1,
+        "flying": 2,
+        "psychic": 1,
+        "bug": 1,
+        "rock": 2,
+        "ghost": 1,
+        "dragon": 1,
+        "dark": 1,
+        "steel": 0.5,
+        "fairy": 0.5
+    })
     
     print(test_team)
