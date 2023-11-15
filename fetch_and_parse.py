@@ -7,7 +7,7 @@ import pandas as pd
 from modules.pokemon import Pokemon
 from modules.team import Team
 import re
-import threading
+import requests
 
 class FetchFromURL:
     BASE_URL = None
@@ -16,10 +16,13 @@ class FetchFromURL:
     options = Options()
     options.add_argument("load-extension=./extensions/ublock-origin")
     driver = webdriver.Chrome(options=options)
+    
+    pokedex = None
 
     def __init__(self, base_url: str, format: str) -> None:
         self.BASE_URL = base_url
         self.CURRENT_FORMAT = format
+        self.pokedex = self.fetch_pokedex()
     
     def open_webpage(self) -> None:
         self.driver.get(self.BASE_URL)
@@ -95,6 +98,10 @@ class FetchFromURL:
             elif "IVs" in line:
                 self.parse_ev_iv("iv", pkm, re.split(": | / ", line)[1:])
         
+        # keys are all lowercase, no spaces, no forme hyphens, and no gender indication outside of formes
+        # (for example: Ogerpon-Hearthflame (F) --> ogerponhearthflame)
+        dex_key = self.pokedex[pkm.get_name().lower().replace(" ", "").replace("-", "").split("(")[0]]
+        pkm.set_dex_info(dex_key)
         # set total stats after parsing of nature, iv, and ev has finished
         pkm.set_total_stats()
         
@@ -140,6 +147,15 @@ class FetchFromURL:
             
             teams.append(paste)
         return teams
+
+    def fetch_pokedex(self) -> dict:
+        base_url = f"https://play.pokemonshowdown.com/data/pokedex.json"
+        response = requests.get(base_url)
+        
+        if response.status_code != 200:
+            print(f"error: {response.status_code}")
+            
+        return response.json()
 
     def fetch(self) -> list[Team]:
         self.open_webpage()

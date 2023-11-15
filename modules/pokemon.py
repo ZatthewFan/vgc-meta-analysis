@@ -98,11 +98,6 @@ class Pokemon:
     
     def set_name(self, name: str) -> None:
         self.name = name
-        
-        self.set_dex_info(self.name)
-        
-        self.set_type()
-        self.set_base_stats()
     
     def set_item(self, item: str) -> None:
         self.item = item
@@ -130,18 +125,11 @@ class Pokemon:
     def set_moveset(self, moveset: list[str]) -> None:
         for slot in range(len(moveset)):
             self.moveset[slot] = moveset[slot]
-            
-    def set_dex_info(self, pkm_name: str) -> None:
-        base_url = f"https://play.pokemonshowdown.com/data/pokedex.json"
-        response = requests.get(base_url)
-        
-        if response.status_code != 200:
-            print(f"error: {response.status_code}")
-
-        # keys are all lowercase, no spaces, no forme hyphens, and no gender indication outside of formes
-        # (for example: Ogerpon-Hearthflame (F) --> ogerponhearthflame)
-        dex_key = pkm_name.lower().replace(" ", "").replace("-", "").split("(")[0]
-        self.dex_info = response.json()[dex_key]
+    
+    def set_dex_info(self, dex: dict) -> None:
+        self.dex_info = dex
+        self.set_type()
+        self.set_base_stats()
     
     def set_type(self) -> None:
         types = [x.lower() for x in self.dex_info["types"]]
@@ -149,6 +137,7 @@ class Pokemon:
     
     def set_base_stats(self) -> None:
         self.base_stats = self.dex_info["baseStats"]
+        print(self.base_stats)
     
     def set_total_stats(self) -> None:
         # formulas are from https://bulbapedia.bulbagarden.net/wiki/Stat#Generation_III_onward
