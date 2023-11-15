@@ -7,6 +7,7 @@ import pandas as pd
 from modules.pokemon import Pokemon
 from modules.team import Team
 import re
+import threading
 
 class FetchFromURL:
     BASE_URL = None
@@ -70,9 +71,7 @@ class FetchFromURL:
     def parse_mon(self, pkm_set: WebElement, team: Team) -> Pokemon:
         pkm = Pokemon()
         pkm_set = pkm_set.text.splitlines()
-
-        # if "EV" not in pkm_set[4]:
-        #     return
+        
         
         # name, item, and ability are sure to be in the pokepaste
         pkm.set_name(pkm_set[0].split("@")[0].strip())
@@ -95,6 +94,9 @@ class FetchFromURL:
                 pkm.set_nature(line.split()[0].strip())
             elif "IVs" in line:
                 self.parse_ev_iv("iv", pkm, re.split(": | / ", line)[1:])
+        
+        # set total stats after parsing of nature, iv, and ev has finished
+        pkm.set_total_stats()
         
         # last 4 lines are probably the moves
         self.parse_moveset(pkm, pkm_set[-4:])

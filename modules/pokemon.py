@@ -99,7 +99,7 @@ class Pokemon:
     def set_name(self, name: str) -> None:
         self.name = name
         
-        self.get_dex_info(self.name)
+        self.set_dex_info(self.name)
         
         self.set_type()
         self.set_base_stats()
@@ -119,9 +119,6 @@ class Pokemon:
     def set_ev(self, **kwargs: list[str | int]) -> None:
         for key, value in kwargs.items():
             self.ev[key] = value
-        
-        # set the total stats
-        self.set_total_stats()
     
     def set_nature(self, nature: str) -> None:
         self.nature = nature
@@ -134,7 +131,7 @@ class Pokemon:
         for slot in range(len(moveset)):
             self.moveset[slot] = moveset[slot]
             
-    def get_dex_info(self, pkm_name: str) -> None:
+    def set_dex_info(self, pkm_name: str) -> None:
         base_url = f"https://play.pokemonshowdown.com/data/pokedex.json"
         response = requests.get(base_url)
         
@@ -174,8 +171,7 @@ class Pokemon:
                 else:
                     total_stats[key] = partial_stat + self.level + 10
             else:
-                # total_stats[key] = math.floor((partial_stat + 5) * NATURE_VAL[self.nature.lower()])
-                print("not reached nature")
+                total_stats[key] = math.floor((partial_stat + 5) * NATURE_VAL[self.nature.lower()][key])
         
         self.total_stats = total_stats
     
