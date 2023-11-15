@@ -28,7 +28,7 @@ class Pokemon:
         self.name = None
         self.item = None
         self.ability = None
-        self.level = None
+        self.level = 50
         self.tera = None
         self.ev = {
             "hp" : 0, 
@@ -38,7 +38,7 @@ class Pokemon:
             "spd": 0, 
             "spe": 0
         }
-        self.nature = None
+        self.nature = "Serious"
         self.iv = {
             "hp" : 31, 
             "atk": 31, 
@@ -47,7 +47,7 @@ class Pokemon:
             "spd": 31, 
             "spe": 31
         }
-        self.moveset = [None, None, None, None]
+        self.moveset = []
         
         self.dex_info = None
         
@@ -77,7 +77,15 @@ class Pokemon:
         }
     
     def set_name(self, name: str) -> None:
-        self.name = name
+        split_parentheses = name.split(" (")
+        length = len(split_parentheses)
+        
+        # handles nicknames and user-set genders
+        if length >= 2 and split_parentheses[1] != "M)" and split_parentheses[1] != "F)":
+            self.name = split_parentheses[1][:-1]
+            return
+        
+        self.name = split_parentheses[0]
     
     def set_item(self, item: str) -> None:
         self.item = item
@@ -104,7 +112,7 @@ class Pokemon:
     
     def set_moveset(self, moveset: list[str]) -> None:
         for slot in range(len(moveset)):
-            self.moveset[slot] = moveset[slot]
+            self.moveset.append(moveset[slot])
     
     def set_dex_info(self, dex: dict) -> None:
         self.dex_info = dex
@@ -118,7 +126,6 @@ class Pokemon:
     
     def set_base_stats(self) -> None:
         self.base_stats = self.dex_info["baseStats"]
-        print(self.base_stats)
     
     def set_total_stats(self) -> None:
         # formulas are from https://bulbapedia.bulbagarden.net/wiki/Stat#Generation_III_onward
