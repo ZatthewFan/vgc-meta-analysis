@@ -166,3 +166,4 @@ class FetchFromURL:
 if __name__ == "__main__":
     url_fetcher = FetchFromURL("https://victoryroadvgc.com/sv-rental-teams/", "gen9vgc2023regulatione")
     teams = url_fetcher.fetch()
+    print("success!")
