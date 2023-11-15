@@ -5,6 +5,7 @@ f = open("nature-val.json")
 NATURE_VAL = json.load(f)
 f = open("defense-type-chart.json")
 DEFENSE_CHART = json.load(f)
+
 class Pokemon:
     name = None
     item = None
