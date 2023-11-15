@@ -1,5 +1,4 @@
 from fetch_and_parse import FetchFromURL
-from modules.pokemon import Pokemon
 
 def name_test(team, expected):
     result = []
@@ -78,10 +77,11 @@ def weakness_test(pkm, expected):
     
     assert result == expected
 
-if __name__ == "__main__":
+def generic_test():
     fetched = FetchFromURL("https://pokepast.es/22b07255f896b829", "gen9vgc2023regulatione")
     fetched.open_webpage()
     test_team = fetched.parse_pokepaste()
+    teamlist = test_team.get_teamlist()
     
     name_test(test_team, ["Tornadus", "Flutter Mane", "Landorus-Therian", "Rillaboom", "Ogerpon-Hearthflame", "Farigiraf"])
     
@@ -93,21 +93,21 @@ if __name__ == "__main__":
     
     tera_test(test_team, ["Ghost", "Fairy", "Flying", "Fire", "Fire", "Fairy"])
     
-    ev_test(test_team.get_teamlist()[1], {"hp": 76, "atk": 0, "def": 100, "spa": 116, "spd": 4, "spe": 212}) # only flutter mane
+    ev_test(teamlist[1], {"hp": 76, "atk": 0, "def": 100, "spa": 116, "spd": 4, "spe": 212}) # only flutter mane
     
     nature_test(test_team, ["Timid", "Modest", "Adamant", "Adamant", "Jolly", "Bold"])
     
-    iv_test(test_team.get_teamlist()[2], {"hp": 31, "atk": 31, "def": 31, "spa": 31, "spd": 31, "spe": 31}) # only lando-t
+    iv_test(teamlist[2], {"hp": 31, "atk": 31, "def": 31, "spa": 31, "spd": 31, "spe": 31}) # only lando-t
     
-    moveset_test(test_team.get_teamlist()[4], ["Ivy Cudgel", "Grassy Glide", "Stomping Tantrum", "Spiky Shield"]) # only ogerpon
+    moveset_test(teamlist[4], ["Ivy Cudgel", "Grassy Glide", "Stomping Tantrum", "Spiky Shield"]) # only ogerpon
     
-    type_test(test_team.get_teamlist()[4], ["grass", "fire"]) # only ogerpon
+    type_test(teamlist[4], ["grass", "fire"]) # only ogerpon
     
-    base_stat_test(test_team.get_teamlist()[3], {"hp": 100, "atk": 125, "def": 90, "spa": 60, "spd": 70, "spe": 85}) # only rillaboom
+    base_stat_test(teamlist[3], {"hp": 100, "atk": 125, "def": 90, "spa": 60, "spd": 70, "spe": 85}) # only rillaboom
     
-    total_stat_test(test_team.get_teamlist()[1], {"hp": 140, "atk": 54, "def": 88, "spa": 187, "spd": 156, "spe": 182}) # only flutter mane
+    total_stat_test(teamlist[1], {"hp": 140, "atk": 54, "def": 88, "spa": 187, "spd": 156, "spe": 182}) # only flutter mane
     
-    weakness_test(test_team.get_teamlist()[4], {
+    weakness_test(teamlist[4], {
         "normal": 1,
         "fire": 1,
         "water": 1,
@@ -129,3 +129,30 @@ if __name__ == "__main__":
     })
     
     print(test_team)
+
+def name_edgecase_test():
+    fetched = FetchFromURL("https://pokepast.es/cb07177a75d08548", "gen9vgc2023regulatione")
+    fetched.open_webpage()
+    edgecase_team = fetched.parse_pokepaste()
+    teamlist = edgecase_team.get_teamlist()
+    
+    name_test(edgecase_team, ["Flutter Mane", "Ogerpon-Hearthflame", "Walking Wake", "Dudunsparce-Three-Segment", "Abomasnow", "Amoonguss"])
+    
+    moveset_test(teamlist[5], ["Body Slam"])
+    
+    total_stat_test(teamlist[1], {"hp": 155, "atk": 171, "def": 104, "spa": 80, "spd": 116, "spe": 130})    # ogerpon
+    
+    total_stat_test(teamlist[2], {"hp": 174, "atk": 88, "def": 111, "spa": 136, "spd": 103, "spe": 129})    # walking wake
+    
+    total_stat_test(teamlist[3], {"hp": 200, "atk": 105, "def": 90, "spa": 102, "spd": 95, "spe": 75})      # dudunsparce
+    
+    total_stat_test(teamlist[4], {"hp": 165, "atk": 112, "def": 95, "spa": 130, "spd": 94, "spe": 80})      # abomasnow
+    
+    total_stat_test(teamlist[5], {"hp": 189, "atk": 105, "def": 72, "spa": 105, "spd": 100, "spe": 55})     # amoonguss
+    
+    print(edgecase_team)
+
+if __name__ == "__main__":
+    generic_test()
+    
+    name_edgecase_test()
