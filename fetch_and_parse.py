@@ -3,7 +3,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.remote.webelement import WebElement
-import pandas as pd
 from modules.pokemon import Pokemon
 from modules.team import Team
 import re
@@ -39,7 +38,6 @@ class FetchFromURL:
     # helper function to process the ev and iv 
     def parse_ev_iv(self, which: str, pkm: Pokemon, stats: list[str]) -> None:
         stats_dict = {}
-
         for stat in stats:
             stat = stat.strip()
             stat = stat.split()
@@ -126,16 +124,9 @@ class FetchFromURL:
         
         for pkm_set in sets:
             pkm = self.parse_mon(pkm_set, team)
-            
-            # # if pkm is does not have ev
-            # if pkm == None:
-            #     continue
-            
             team.add_pkm(pkm)
             
-        
         return team
-
 
     def parse_all_pokepastes(self, pokepastes: list[str]) -> list[Team]:
         teams = []
@@ -164,30 +155,6 @@ class FetchFromURL:
         self.driver.quit()
         return teams
 
-
-class ConvertCSV:
-    def pkm_to_df(self, teamlist):
-        n = 0           # test purposes; remove later
-        for pkm in teamlist:
-            print(n)    # TODO this is a placeholder; change this
-            n += 1      # test purposes; remove later
-        return
-
-    def team_to_df(self, team: Team) -> None:
-        self.pkm_to_df(team.get_teamlist())
-        # do something with team format
-        # do something with team OTS status
-        return
-
-    def teams_to_csv(self, teams: list[Team]) -> None:
-        # TODO decide whether teams are supposed to be a csv referencing other csv for pokemon, directory, or teams and pokemon should be in different diretories
-        for team in teams:
-            self.team_to_df(team)
-        return
-
 if __name__ == "__main__":
     url_fetcher = FetchFromURL("https://victoryroadvgc.com/sv-rental-teams-2023/", "gen9vgc2023regulatione")
     teams = url_fetcher.fetch()
-    
-    converter = ConvertCSV()
-    converter.teams_to_csv(teams)
