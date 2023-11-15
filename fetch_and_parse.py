@@ -76,17 +76,22 @@ class FetchFromURL:
         
         # name, item, and ability are sure to be in the pokepaste
         pkm.set_name(pkm_set[0].split("@")[0].strip())
-        pkm.set_item(pkm_set[0].split("@")[1].strip())
+        try:
+            pkm.set_item(pkm_set[0].split("@")[1].strip())
+        except IndexError:
+            pkm.set_item(None)
         pkm.set_ability(pkm_set[1].split(":")[1].strip())
+        
+        # for smogon formats
+        if "vgc" not in self.CURRENT_FORMAT:
+            pkm.set_level(100)
         
         # Tera Type, EVs, Nature, and IVs might not be in the pokepaste or might not be in a fixed line
         # this loops through every line, checking whether it's any of the attributes we're looking for, and updates the pokemon set
         for i in range(2, len(pkm_set)):
             line = pkm_set[i]
             
-            if "Level" in line:
-                pkm.set_level(int(line.split(":")[1].strip()))
-            elif "Tera Type" in line:
+            if "Tera Type" in line:
                 pkm.set_tera(line.split(":")[1].strip())
             elif "EVs" in line:
                 self.parse_ev_iv("ev", pkm, re.split(": | / ", line)[1:])
@@ -96,12 +101,15 @@ class FetchFromURL:
             elif "IVs" in line:
                 self.parse_ev_iv("iv", pkm, re.split(": | / ", line)[1:])
         
-        # keys are all lowercase, no spaces, no forme hyphens, and no gender indication outside of formes
-        # (for example: Ogerpon-Hearthflame (F) --> ogerponhearthflame)
-        dex_key = self.pokedex[pkm.get_name().lower().replace(" ", "").replace("-", "").split("(")[0]]
-        pkm.set_dex_info(dex_key)
-        # set total stats after parsing of nature, iv, and ev has finished
-        pkm.set_total_stats()
+        if not team.is_ots:
+            # keys are all lowercase, no spaces, no forme hyphens, and no gender indication outside of formes
+            # for example: Ogerpon-Hearthflame (F) --> ogerponhearthflame
+            dex_info = self.pokedex[pkm.get_name().lower().replace(" ", "").replace("-", "")]
+            # dex_info = self.handle_nicknames(pkm.get_name())
+            pkm.set_dex_info(dex_info)
+            
+            # set total stats after parsing of nature, iv, and ev has finished
+            pkm.set_total_stats()
         
         # last 4 lines are probably the moves
         self.parse_moveset(pkm, pkm_set[-4:])
@@ -156,5 +164,5 @@ class FetchFromURL:
         return teams
 
 if __name__ == "__main__":
-    url_fetcher = FetchFromURL("https://victoryroadvgc.com/sv-rental-teams-2023/", "gen9vgc2023regulatione")
+    url_fetcher = FetchFromURL("https://victoryroadvgc.com/sv-rental-teams/", "gen9vgc2023regulatione")
     teams = url_fetcher.fetch()
