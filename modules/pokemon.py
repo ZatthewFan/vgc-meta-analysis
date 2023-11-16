@@ -24,6 +24,7 @@ class Pokemon:
     total_stats = None
     
     weaknesses = None
+    tera_weaknesses = None
     
     def __init__(self):
         self.name = None
@@ -76,6 +77,27 @@ class Pokemon:
             "steel": 1,
             "fairy": 1
         }
+        
+        self.tera_weaknesses = {
+            "normal": 1,
+            "fire": 1,
+            "water": 1,
+            "electric": 1,
+            "grass": 1,
+            "ice": 1,
+            "fighting": 1,
+            "poison": 1,
+            "ground": 1,
+            "flying": 1,
+            "psychic": 1,
+            "bug": 1,
+            "rock": 1,
+            "ghost": 1,
+            "dragon": 1,
+            "dark": 1,
+            "steel": 1,
+            "fairy": 1
+        }
     
     def set_name(self, name: str) -> None:
         split_parentheses = name.split(" (")
@@ -99,6 +121,7 @@ class Pokemon:
     
     def set_tera(self, tera: str) -> None:
         self.tera = tera
+        self.set_tera_weaknesses()
     
     def set_ev(self, **kwargs: list[str | int]) -> None:
         for key, value in kwargs.items():
@@ -156,11 +179,12 @@ class Pokemon:
     def set_weaknesses(self) -> None:
         # time complexity isn't horrible, self.pkm_type only has at most 2
         for my_type in self.pkm_type:
-            for type in self.weaknesses.keys():
-                self.weaknesses[type] *= DEFENSE_CHART[my_type][type]
+            for type_ in self.weaknesses.keys():
+                self.weaknesses[type_] *= DEFENSE_CHART[my_type][type_]
     
-    # def set_tera_weaknesses(self) -> None:
-    #     return
+    def set_tera_weaknesses(self) -> None:
+        for type_ in self.tera_weaknesses.keys():
+            self.tera_weaknesses[type_] *= DEFENSE_CHART[self.tera.lower()][type_]
     
     def get_name(self) -> str:
         return self.name
@@ -200,3 +224,6 @@ class Pokemon:
 
     def get_weaknesses(self) -> dict[str, int]:
         return self.weaknesses
+
+    def get_tera_weaknesses(self) -> dict[str, int]:
+        return self.tera_weaknesses

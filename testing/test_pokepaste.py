@@ -77,6 +77,11 @@ def weakness_test(pkm, expected):
     
     assert result == expected
 
+def tera_weakness_test(pkm, expected):
+    result = pkm.get_tera_weaknesses()
+    
+    assert result == expected
+
 def generic_test():
     fetched = FetchFromURL("https://pokepast.es/22b07255f896b829", "gen9vgc2023regulatione")
     fetched.open_webpage()
@@ -128,7 +133,28 @@ def generic_test():
         "fairy": 0.5
     })
     
-    print(test_team)
+    tera_weakness_test(teamlist[0], {
+        "normal": 0,
+        "fire": 1,
+        "water": 1,
+        "electric": 1,
+        "grass": 1,
+        "ice": 1,
+        "fighting": 0,
+        "poison": 0.5,
+        "ground": 1,
+        "flying": 1,
+        "psychic": 1,
+        "bug": 0.5,
+        "rock": 1,
+        "ghost": 2,
+        "dragon": 1,
+        "dark": 2,
+        "steel": 1,
+        "fairy": 1
+    })
+    
+    print("generic test: success!")
 
 def name_edgecase_test():
     fetched = FetchFromURL("https://pokepast.es/68901408d117f407", "gen9vgc2023regulatione")    # lobotomy, I choose you!
@@ -150,7 +176,7 @@ def name_edgecase_test():
     
     total_stat_test(teamlist[5], {"hp": 110, "atk": 60, "def": 54, "spa": 70, "spd": 70, "spe": 122})     # pikachu
     
-    print(edgecase_team)
+    print("edge case team: success!")
 
 if __name__ == "__main__":
     generic_test()
