@@ -3,6 +3,8 @@ class Team:
     format = None
     is_ots = None
     teamlist = None
+    archetype = None
+    
     iter_count = None
     
     def __init__(self, format: str) -> None:
