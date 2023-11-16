@@ -1,5 +1,7 @@
+# this test sucks, test_pokepaste.py is the better one
+# don't look further lol
+
 from modules.pokemon import Pokemon
-from fetch_and_parse import FetchFromURL
 import re
 
 def parse_ev_iv(which: str, pkm: Pokemon, stats: list[str]) -> None:

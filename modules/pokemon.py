@@ -81,7 +81,7 @@ class Pokemon:
         split_parentheses = name.split(" (")
         length = len(split_parentheses)
         
-        # handles nicknames and user-set genders
+        # handles nicknames and user-specified genders
         if length >= 2 and split_parentheses[1] != "M)" and split_parentheses[1] != "F)":
             self.name = split_parentheses[1][:-1]
             return
@@ -154,9 +154,13 @@ class Pokemon:
         self.total_stats = total_stats
     
     def set_weaknesses(self) -> None:
+        # time complexity isn't horrible, self.pkm_type only has at most 2
         for my_type in self.pkm_type:
             for type in self.weaknesses.keys():
                 self.weaknesses[type] *= DEFENSE_CHART[my_type][type]
+    
+    # def set_tera_weaknesses(self) -> None:
+    #     return
     
     def get_name(self) -> str:
         return self.name

@@ -130,7 +130,7 @@ try:
     #                     );
     #                     '''
     
-    cur.execute(create_script)
+    # cur.execute(create_script)
     
 except Exception as error:
     print(error)

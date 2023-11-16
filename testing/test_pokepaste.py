@@ -131,14 +131,14 @@ def generic_test():
     print(test_team)
 
 def name_edgecase_test():
-    fetched = FetchFromURL("https://pokepast.es/cb07177a75d08548", "gen9vgc2023regulatione")
+    fetched = FetchFromURL("https://pokepast.es/68901408d117f407", "gen9vgc2023regulatione")    # lobotomy, I choose you!
     fetched.open_webpage()
     edgecase_team = fetched.parse_pokepaste()
     teamlist = edgecase_team.get_teamlist()
     
-    name_test(edgecase_team, ["Flutter Mane", "Ogerpon-Hearthflame", "Walking Wake", "Dudunsparce-Three-Segment", "Abomasnow", "Amoonguss"])
+    name_test(edgecase_team, ["Flutter Mane", "Ogerpon-Hearthflame", "Walking Wake", "Dudunsparce-Three-Segment", "Abomasnow", "Pikachu"])
     
-    moveset_test(teamlist[5], ["Body Slam"])
+    moveset_test(teamlist[5], ["Thunderbolt"])
     
     total_stat_test(teamlist[1], {"hp": 155, "atk": 171, "def": 104, "spa": 80, "spd": 116, "spe": 130})    # ogerpon
     
@@ -148,7 +148,7 @@ def name_edgecase_test():
     
     total_stat_test(teamlist[4], {"hp": 165, "atk": 112, "def": 95, "spa": 130, "spd": 94, "spe": 80})      # abomasnow
     
-    total_stat_test(teamlist[5], {"hp": 189, "atk": 105, "def": 72, "spa": 105, "spd": 100, "spe": 55})     # amoonguss
+    total_stat_test(teamlist[5], {"hp": 110, "atk": 60, "def": 54, "spa": 70, "spd": 70, "spe": 122})     # pikachu
     
     print(edgecase_team)
 

@@ -26,7 +26,6 @@ class FetchFromURL:
     def open_webpage(self) -> None:
         self.driver.get(self.BASE_URL)
 
-    # returns a list of all links containing pokepast.es
     def get_pokepaste_links(self) -> list[str]:
         pokepastes = []
         pokepaste_links = self.driver.find_elements(By.XPATH, '//a[contains(@href, "pokepast.es")]')
@@ -35,7 +34,6 @@ class FetchFromURL:
         
         return pokepastes
 
-    # helper function to process the ev and iv 
     def parse_ev_iv(self, which: str, pkm: Pokemon, stats: list[str]) -> None:
         stats_dict = {}
         for stat in stats:
@@ -68,11 +66,10 @@ class FetchFromURL:
         
         pkm.set_moveset(moveset)
 
-    # parses the data for each individual pokemon
+    # this was a headache 😵‍💫
     def parse_mon(self, pkm_set: WebElement, team: Team) -> Pokemon:
         pkm = Pokemon()
         pkm_set = pkm_set.text.splitlines()
-        
         
         # name, item, and ability are sure to be in the pokepaste
         pkm.set_name(pkm_set[0].split("@")[0].strip())
@@ -103,12 +100,11 @@ class FetchFromURL:
         
         if not team.is_ots:
             # keys are all lowercase, no spaces, no forme hyphens, and no gender indication outside of formes
-            # for example: Ogerpon-Hearthflame (F) --> ogerponhearthflame
+            # for example: Ogerpon-Hearthflame (F) -> ogerponhearthflame
             dex_info = self.pokedex[pkm.get_name().lower().replace(" ", "").replace("-", "")]
-            # dex_info = self.handle_nicknames(pkm.get_name())
             pkm.set_dex_info(dex_info)
             
-            # set total stats after parsing of nature, iv, and ev has finished
+            # set total stats after parsing of nature, iv, and ev has finished to avoid errors
             pkm.set_total_stats()
         
         # last 4 lines are probably the moves
@@ -116,7 +112,6 @@ class FetchFromURL:
         
         return pkm
 
-    # stratifies the pokepaste for each pokemon, and iterates through them
     def parse_pokepaste(self) -> Team:
         sets = self.driver.find_elements(By.CSS_SELECTOR, 'pre')
         try:
@@ -126,7 +121,6 @@ class FetchFromURL:
         
         team = Team(vgc_format)
         
-        # format checker
         if (vgc_format != self.CURRENT_FORMAT):
             return
         
@@ -148,6 +142,7 @@ class FetchFromURL:
         return teams
 
     def fetch_pokedex(self) -> dict:
+        # showdown's api >>>> pokeapi
         base_url = f"https://play.pokemonshowdown.com/data/pokedex.json"
         response = requests.get(base_url)
         
