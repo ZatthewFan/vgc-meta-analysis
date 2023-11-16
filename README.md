@@ -27,6 +27,15 @@ I chose to do go with a supervised machine learning approach because it is possi
 I have yet to choose an ML model for the analysis, but I would be grouping teams with similar archetypes together, so my initial thought would be a classification or clustering model.
 <!------>
 
+### Extras
+#### <a href="defense-type-chart.json">defense-type-chart.json</a>: every type and its defensive properties
+- Feel free to use it. **[*defending-type*][*attacking-type*]** will give you *defending-type*'s damage multiplier against *attacking-type*
+    - [fire][water] will result in 2 (fire takes double damage from water)
+
+#### <a href="nature-val.json">nature-val.json</a>: every nature and its stat boost / stat lower
+- Also feel free to use it
+- all lower case
+
 ### End Goal
 - Finding options for a sixth member of a team
 - Finding the favorable and poor matchups for a given team
