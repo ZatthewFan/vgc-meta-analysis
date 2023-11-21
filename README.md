@@ -5,10 +5,28 @@ Teambuilding is half the game in Pokemon VGC. It requires extensive knowledge ab
 ## How it works
 This program uses Selenium to automate data collection of VGC teams with tournament results. The data is stored in a PostgreSQL database which is then analyzed using machine learning to report results.
 
+*This project was built using `Python 3.12` and `pip 23.3.1`. Unexpected behaviour may occur if using older versions.*
+
+
+First, start by cloning the project into a chosen directory.
+
+To install dependencies, enter the following into your chosen terminal
+
+```
+pip install -r requirements.txt
+```
+
+
 ### Fetching
 The main file that fetches data is <a href="fetch_and_parse.py">fetch_and_parse.py</a>
 
-It fetches all https://pokepast.es/ link from a chosen website (in this case, https://victoryroadvgc.com/sv-rental-teams/). Each pokepaste is a Team object and there are up to 6 Pokemon objects within a Team.
+This file can be run by using the following command
+
+```
+python3 fetch_and_parse.py
+```
+
+The code will open an instance of a Chrome Driver that fetches all https://pokepast.es/ link from a chosen website (in this case, https://victoryroadvgc.com/sv-rental-teams/). Each pokepaste is a Team object and there are up to 6 Pokemon objects within a Team.
 
 ### Data Storing
 The file that deals with stooring the data into a database is <a href="database.py">database.py</a>
