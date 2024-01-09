@@ -20,7 +20,8 @@ try:
         host = POSTGRES_HOST,
         user = POSTGRES_USER,
         password = POSTGRES_PASS,
-        port = POSTGRES_PORT)
+        port = POSTGRES_PORT
+        )
     
     cur = conn.cursor()
     
