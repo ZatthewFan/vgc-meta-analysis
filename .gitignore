@@ -2,3 +2,4 @@ extensions/*
 __pycache__/
 .ipynb_checkpoints/
 .env
+virtual-env
