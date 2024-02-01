@@ -12,11 +12,13 @@ import os
 class FetchFromURL:
     BASE_URL = None
     CURRENT_FORMAT = None
+    
+    options = Options()
 
     if os.path.exists("./extensions/ubblock-origin"):
-        options = Options()
         options.add_argument("load-extension=./extensions/ublock-origin")
-        driver = webdriver.Chrome(options=options)
+    
+    driver = webdriver.Chrome(options=options)
     
     pokedex = None
 
