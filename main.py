@@ -1,15 +1,5 @@
-import psycopg2
-from dotenv import find_dotenv, load_dotenv
-import os
-
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path)
-
-POSTGRES_DB = os.getenv("POSTGRES_DB")
-POSTGRES_HOST = os.getenv("POSTGRES_HOST")
-POSTGRES_USER = os.getenv("POSTGRES_USER")
-POSTGRES_PASS = os.getenv("POSTGRES_PASS")
-POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+from fetch_and_parse import FetchFromURL
+from database import execute_script
 
 setup_script = ''' CREATE TABLE IF NOT EXISTS pokemon (
                         pkm_id      int PRIMARY KEY,
@@ -136,27 +126,10 @@ setup_script = ''' CREATE TABLE IF NOT EXISTS pokemon (
                     );
                     '''
 
-def execute_script(script: str):
-    conn = None
-    cur = None
+if __name__ == "__main__":
+    url_fetcher = FetchFromURL("https://victoryroadvgc.com/sv-rental-teams/", "gen9vgc2023regulationg")
+    teams = url_fetcher.fetch()
+    print("fetched!")
 
-    try:
-        conn = psycopg2.connect(
-            database = POSTGRES_DB,
-            host = POSTGRES_HOST,
-            user = POSTGRES_USER,
-            password = POSTGRES_PASS,
-            port = POSTGRES_PORT
-        )
-        
-        # <------------------------------->
-        cur = conn.cursor()
-        cur.execute(script)
-        conn.commit()
-        # <------------------------------->
-        
-    except Exception as error:
-        print(error)
-    finally:
-        if cur is not None: cur.close()
-        if conn is not None: conn.close()
+    execute_script(setup_script)
+    print("finished setting up database")
