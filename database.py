@@ -25,7 +25,7 @@ try:
     
     cur = conn.cursor()
     
-    create_script = ''' CREATE TABLE IF NOT EXIST pokemon (
+    create_script = ''' CREATE TABLE IF NOT EXISTS pokemon (
                             pkm_id      int PRIMARY KEY,
                             name        varchar(40) NOT NULL,
                             item        varchar(30),
@@ -35,7 +35,7 @@ try:
                             nature      varchar(10)
                         );
                         
-                        CREATE TABLE IF NOT EXIST ev (
+                        CREATE TABLE IF NOT EXITS ev (
                             ev_id       int PRIMARY KEY,
                             hp          int NOT NULL,
                             atk         int NOT NULL,
@@ -43,10 +43,11 @@ try:
                             spa         int NOT NULL,
                             spd         int NOT NULL,
                             spe         int NOT NULL,
+                            pkm_id      int NOT NULL,
                             FOREIGN KEY (pkm_id) REFERENCES pokemon(pkm_id)
                         );
                         
-                        CREATE TABLE IF NOT EXIST iv (
+                        CREATE TABLE IF NOT EXITS iv (
                             iv_id       int PRIMARY KEY,
                             hp          int NOT NULL,
                             atk         int NOT NULL,
@@ -54,26 +55,29 @@ try:
                             spa         int NOT NULL,
                             spd         int NOT NULL,
                             spe         int NOT NULL,
+                            pkm_id      int NOT NULL,
                             FOREIGN KEY (pkm_id) REFERENCES pokemon(pkm_id)
                         );
                         
-                        CREATE TABLE IF NOT EXIST moveset (
+                        CREATE TABLE IF NOT EXITS moveset (
                             moveset_id  int PRIMARY KEY,
                             slot1       varchar(30) NOT NULL,
                             slot2       varchar(30),
                             slot3       varchar(30),
                             slot4       varchar(30),
+                            pkm_id      int NOT NULL,
                             FOREIGN KEY (pkm_id) REFERENCES pokemon(pkm_id)
                         );
                         
-                        CREATE TABLE IF NOT EXIST type (
+                        CREATE TABLE IF NOT EXITS type (
                             type_id     int PRIMARY KEY,
                             type1       varchar(20) NOT NULL,
                             type2       varchar(20),
+                            pkm_id      int NOT NULL,
                             FOREIGN KEY (pkm_id) REFERENCES pokemon(pkm_id)
                         );
                         
-                        CREATE TABLE IF NOT EXIST base_stats (
+                        CREATE TABLE IF NOT EXITS  base_stats (
                             bstat_id    int PRIMARY KEY,
                             hp          int NOT NULL,
                             atk         int NOT NULL,
@@ -81,10 +85,11 @@ try:
                             spa         int NOT NULL,
                             spd         int NOT NULL,
                             spe         int NOT NULL,
+                            pkm_id      int NOT NULL,
                             FOREIGN KEY (pkm_id) REFERENCES pokemon(pkm_id)
                         );
                         
-                        CREATE TABLE IF NOT EXIST total_stats (
+                        CREATE TABLE IF NOT EXITS  total_stats (
                             tstat_id    int PRIMARY KEY,
                             hp          int NOT NULL,
                             atk         int NOT NULL,
@@ -92,10 +97,11 @@ try:
                             spa         int NOT NULL,
                             spd         int NOT NULL,
                             spe         int NOT NULL,
+                            pkm_id      int NOT NULL,
                             FOREIGN KEY (pkm_id) REFERENCES pokemon(pkm_id)
                         );
                         
-                        CREATE TABLE IF NOT EXIST weaknesses (
+                        CREATE TABLE IF NOT EXITS  weaknesses (
                             weakness_id int PRIMARY KEY,
                             normal      float NOT NULL,
                             fire        float NOT NULL,
@@ -115,28 +121,37 @@ try:
                             dark        float NOT NULL,
                             steel       float NOT NULL,
                             fairy       float NOT NULL,
+                            pkm_id      int NOT NULL,
                             FOREIGN KEY (pkm_id) REFERENCES pokemon(pkm_id)
                         );
                         
-                        CREATE TABLE IF NOT EXIST team (
-                            team_id     int PRIMARY KEY
+                        CREATE TABLE IF NOT EXITS  team (
+                            team_id     int PRIMARY KEY,
                             format      varchar(30) NOT NULL,
-                            is_ots      boolean NOT NULL,
+                            is_ots      boolean NOT NULL
                         );
                         
-                        CREATE TABLE IF NOT EXIST teamlist (
+                        CREATE TABLE IF NOT EXITS teamlist (
                             teamlist_id int PRIMARY KEY,
-                            pkm1_id     int FOREIGN KEY,
-                            pkm2_id     int FOREIGN KEY,
-                            pkm3_id     int FOREIGN KEY,
-                            pkm4_id     int FOREIGN KEY,
-                            pkm5_id     int FOREIGN KEY,
-                            pkm6_id     int FOREIGN KEY,
+                            pkm1_id     int NOT NULL,
+                            pkm2_id     int NOT NULL,
+                            pkm3_id     int NOT NULL,
+                            pkm4_id     int NOT NULL,
+                            pkm5_id     int NOT NULL,
+                            pkm6_id     int NOT NULL,
+                            team_id     int NOT NULL,
+                            FOREIGN KEY (pkm1_id) REFERENCES pokemon(pkm_id),
+                            FOREIGN KEY (pkm2_id) REFERENCES pokemon(pkm_id),
+                            FOREIGN KEY (pkm3_id) REFERENCES pokemon(pkm_id),
+                            FOREIGN KEY (pkm4_id) REFERENCES pokemon(pkm_id),
+                            FOREIGN KEY (pkm5_id) REFERENCES pokemon(pkm_id),
+                            FOREIGN KEY (pkm6_id) REFERENCES pokemon(pkm_id),
                             FOREIGN KEY (team_id) REFERENCES team(team_id)
                         );
                         '''
     
     cur.execute(create_script)
+    conn.commit()
     
 except Exception as error:
     print(error)
