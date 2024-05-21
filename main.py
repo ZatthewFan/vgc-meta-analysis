@@ -1,7 +1,7 @@
 from fetch_and_parse import FetchFromURL
 from database import execute_script
 
-setup_script = ''' CREATE TABLE IF NOT EXISTS pokemon (
+SETUP_SCRIPT = ''' CREATE TABLE IF NOT EXISTS pokemon (
                         pkm_id      int PRIMARY KEY,
                         name        varchar(40) NOT NULL,
                         item        varchar(30),
@@ -127,9 +127,9 @@ setup_script = ''' CREATE TABLE IF NOT EXISTS pokemon (
                     '''
 
 if __name__ == "__main__":
-    url_fetcher = FetchFromURL("https://victoryroadvgc.com/sv-rental-teams/", "gen9vgc2023regulationg")
+    url_fetcher = FetchFromURL("https://victoryroadvgc.com/sv-rental-teams/", "gen9vgc2023regulationf")
     teams = url_fetcher.fetch()
     print("fetched!")
 
-    execute_script(setup_script)
+    execute_script(SETUP_SCRIPT)
     print("finished setting up database")
